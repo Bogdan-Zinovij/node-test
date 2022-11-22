@@ -4,13 +4,10 @@
     "node": true
   },
   "plugins": ["sonarjs", "prettier"],
-  "extends": [
-    "eslint:recommended",
-    "plugin:prettier/recommended",
-    "plugin:sonarjs/recommended"
-  ],
+  "extends": ["eslint:recommended", "plugin:sonarjs/recommended", "prettier"],
   "parserOptions": {
-    "ecmaVersion": 2020
+    "ecmaVersion": 2020,
+    "sourceType": "module"
   },
   "globals": {
     "BigInt": true
