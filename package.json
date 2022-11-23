@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node ./src/index.js",
+    "start": "node ./src/server.js",
     "test": "echo \"Warn: no test specified\" && exit 0",
     "eslint": "eslint \"**/*.js\" --ignore-path .gitignore",
     "eslint:fix": "eslint \"**/*.js\" --fix --ignore-path .gitignore",
