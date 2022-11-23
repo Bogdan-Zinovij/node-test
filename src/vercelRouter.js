@@ -1,5 +1,5 @@
-import { HTTPMethod } from './constants/methods';
-import { safeJSONParse } from './utils';
+import { HTTPMethod } from './constants/methods.js';
+import { safeJSONParse } from './utils.js';
 
 const processedContentTypes = {
   'text/html': (text) => text,
@@ -36,6 +36,7 @@ export class VercelRouter {
     for await (const chunk of req) {
       rawRequest += chunk;
     }
+    console.log(this.routes, '\n', req, '\n', method);
     const methodHandlers = this.routes[url][method];
     if (!methodHandlers) {
       throw new Error('Handlers are not implemented');
@@ -49,7 +50,7 @@ export class VercelRouter {
     for (const handler of methodHandlers) {
       await handler(req, res, payload);
     }
-    res.status(200).end();
+    res.end();
   }
 
   delete(route, ...handlers) {
