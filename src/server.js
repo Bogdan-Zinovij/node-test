@@ -1,22 +1,23 @@
-import http from 'http';
-import { jokeRouter } from '../api/index.js';
+import * as http from 'node:http';
+import helpers from './lib/helpers.js';
+import router from './api/routes.js';
 
-const PORT = 8000;
-
-const server = http.createServer((req, res) => {
-  try {
-    jokeRouter.handle(req, res);
-  } catch (e) {
-    console.log(e);
-    const status = e.status ?? 500;
-    res.status(status).send(
-      JSON.stringify({
-        errors: [{ status, title: e.message }],
-      }),
-    );
-  }
+const server = http.createServer(async (req, res) => {
+  await router.handle(req, Object.assign(res, helpers), router);
 });
 
-server.listen(PORT, () => {
-  console.log(`Server running at port ${PORT}`);
+server.listen(parseInt(process.env.PORT) || 8080);
+
+server.on('clientError', (err, socket) => {
+  socket.end('HTTP/1.1 400 Bad Request\r\n\r\n');
+});
+
+process.on('SIGINT', () => {
+  server.close((error) => {
+    if (error) {
+      console.error(error);
+      process.exit(1);
+    }
+  });
+  process.exit(0);
 });
